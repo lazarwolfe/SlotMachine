@@ -1,0 +1,7 @@
+name: SlotsPlugin
+main: io.github.lazarwolfe.slots.SlotMachinePlugin
+version: 0.7
+author: Lazar Wolfe
+commands:
+  SlotsVersion:
+    description: Returns the version number.
