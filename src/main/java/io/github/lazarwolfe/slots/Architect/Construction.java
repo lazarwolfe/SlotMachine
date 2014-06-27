@@ -2,8 +2,13 @@ package io.github.lazarwolfe.slots.Architect;
 
 import java.util.Iterator;
 
+import javax.persistence.Entity;
+
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.EntityType;
 
 public class Construction extends Blueprint {
 
@@ -29,7 +34,7 @@ public class Construction extends Blueprint {
 	
 	/**
 	 * Sets the facing of the entire blueprint.  Blueprints start facing north.
-	 * This rotates all blocks and entities around 0,0.
+	 * This rotates all blocks and entities around 0,0,0.
 	 * @param newBlockFace
 	 */
 	public void SetFace(BlockFace newBlockFace)
@@ -49,7 +54,7 @@ public class Construction extends Blueprint {
 	}
 	
 	/**
-	 * Rotates all blocks and entities left 90 degrees around 0,0.
+	 * Translates all blocks and entities by the offset provided.
 	 */
 	protected void Translate(int dx, int dy, int dz)
 	{
@@ -72,7 +77,7 @@ public class Construction extends Blueprint {
 	}
 	
 	/**
-	 * Rotates all blocks and entities left 90 degrees around 0,0.
+	 * Rotates all blocks and entities left 90 degrees around 0,0,0.
 	 */
 	protected void RotateLeft90()
 	{
@@ -98,7 +103,7 @@ public class Construction extends Blueprint {
 	}
 	
 	/**
-	 * Rotates all blocks and entities right 90 degrees around 0,0.
+	 * Rotates all blocks and entities right 90 degrees around 0,0,0.
 	 */
 	protected void RotateRight90()
 	{
@@ -124,7 +129,7 @@ public class Construction extends Blueprint {
 	}
 	
 	/**
-	 * Rotates all blocks and entities 180 degrees around 0,0.
+	 * Rotates all blocks and entities 180 degrees around 0,0,0.
 	 */
 	protected void Rotate180()
 	{
@@ -145,7 +150,7 @@ public class Construction extends Blueprint {
     	}
 	}
 	
-	// These three helper functions should be functions of BlockFace, IMHO.
+	// These two helper functions should be functions of BlockFace, IMHO.
 	protected BlockFace GetLeft90(BlockFace blockFace)
 	{
 		switch (blockFace) {
@@ -163,7 +168,7 @@ public class Construction extends Blueprint {
 		}
 	}
 	
-	// These three helper functions should be functions of BlockFace, IMHO.
+	// These two helper functions should be functions of BlockFace, IMHO.
 	protected BlockFace GetRight90(BlockFace blockFace)
 	{
 		switch (blockFace) {
@@ -179,5 +184,15 @@ public class Construction extends Blueprint {
 			// We don't deal with diagonals.
 			return BlockFace.SELF;
 		}
+	}
+	
+	public Block GetBlock(Material material, int index)
+	{
+		return null;
+	}
+	
+	public Entity GetEntity(EntityType entityType, int index)
+	{
+		return null;
 	}
 }
