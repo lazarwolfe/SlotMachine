@@ -11,6 +11,7 @@ public class BlueprintBlock {
 	public int x;
 	public int y;
 	public int z;
+	// TODO: Do we want to add BlockFace?  How do we position stairs, for example?
 	
 	public BlueprintBlock(Material material, int x, int y, int z) {
 		this.material = material;

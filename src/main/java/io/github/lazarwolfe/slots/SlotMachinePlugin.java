@@ -3,6 +3,8 @@ package io.github.lazarwolfe.slots;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
@@ -15,9 +17,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class SlotMachinePlugin extends JavaPlugin {
 	
 	private String pluginName = "Slots";
-	private String version = "0.1";
+	private String version = "0.2";
 	
-	private LinkedList <SlotMachine> machines = new LinkedList<SlotMachine>();
+	private static LinkedList <SlotMachine> machines = new LinkedList<SlotMachine>();
+    public static SlotMachineTemplate templates[];
 	
 	private static SlotMachinePlugin instance = null;
 	public static SlotMachinePlugin getInstance() {
@@ -26,7 +29,9 @@ public class SlotMachinePlugin extends JavaPlugin {
 	
 	@Override
     public void onEnable() {
-        // TODO Insert logic to be performed when the plugin is enabled
+        // TODO Load more than one type of slot machine
+		templates = new SlotMachineTemplate[1];
+		templates[0] = new SlotMachineTemplate(Material.QUARTZ_BLOCK);
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new SlotMachineLeverListener(this),  this);
 		instance = this;
@@ -47,6 +52,21 @@ public class SlotMachinePlugin extends JavaPlugin {
     	}
     	return false;
     }
+	
+	/**
+	 * Returns a slot machine template based on the material type.
+	 * @param material Type of slot machine to load.
+	 * @return template, if found.  Otherwise null.
+	 */
+	public SlotMachineTemplate GetTemplate(Material material)
+	{
+		for (int i=0; i<templates.length; ++i) {
+			if (templates[i].type == material) {
+				return templates[i];
+			}
+		}
+		return null;
+	}
     
     /**
      * Checks to see if there is a lot machine currently registered, or if one is built but not registered.
@@ -61,35 +81,28 @@ public class SlotMachinePlugin extends JavaPlugin {
 		// TODO: Check to see if the lever has a slot machine enchantment.
 	    BlockState state = leverBlock.getState();
 	    Lever lever = (Lever)state.getData();
+	    Location loc = leverBlock.getLocation();
     	// Do we already know about this slot machine?
     	Iterator<SlotMachine> iterator = machines.iterator();
     	while (iterator.hasNext()) {
     		machine = iterator.next();
-	    	player.sendMessage("===== Checking a machine.");
-    		if (machine.leverBlock == leverBlock) {
-    	    	player.sendMessage("===== Found a machine.");
+    		Location machineLoc = machine.leverBlock.getLocation();
+    		if (machineLoc.equals(loc)) {
     			return machine;
     		}
     	}
     	// Is there a machine properly set up?
     	machine = SlotMachine.getExistingMachine(this, leverBlock, player);
     	if (machine != null) {
-	    	player.sendMessage("===== Added a new machine.");
     		machines.add(machine);
     		return machine;
     	}
     	// TODO: Determine if the lever has the correct enchantment to allow creation of a SlotMachine.
     	if (true) {
-	    	player.sendMessage("===== Trying to create a machine.");
-    		machine = SlotMachine.createMachine(this, player, leverBlock);
+    		machine = SlotMachine.createMachine(this, leverBlock, player);
     		if (machine != null) {
         		machines.add(machine);
-            	player.sendMessage("Slot Machine created.");
         		lever.setPowered(false);
-    		}
-    		else
-    		{
-    	    	player.sendMessage("===== Failed to create a machine.");
     		}
     	}
     	return machine;

@@ -11,7 +11,7 @@ public class SlotMachineSpinner extends BukkitRunnable {
 	public ItemFrame itemFrame;
 	public Material[] contents;
 	public int index = 0;
-	public int duration;
+	public int duration = -1;
 	
 	public SlotMachineSpinner(SlotMachine machine, ItemFrame itemFrame, Material[] contents) {
 		this.machine = machine;
@@ -22,9 +22,13 @@ public class SlotMachineSpinner extends BukkitRunnable {
 	
 	@Override
 	public void run() {
+		if (duration == 0) {
+			return;
+		}
 		--duration;
-		if (duration <= 0) {
-			cancel();
+		if (duration == 0) {
+			//TODO: Find a way to cancel and then later resume a task.
+			//cancel();
 			machine.onSlotDone(this);
 		} else {
 			++index;

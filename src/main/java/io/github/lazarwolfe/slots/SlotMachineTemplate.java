@@ -8,46 +8,38 @@ import io.github.lazarwolfe.slots.Architect.Blueprint;
 
 public class SlotMachineTemplate {
 	
-	/**
-	 * The number of spinners for the machine, usually 3.
-	 */
+	/** The number of spinners for the machine, usually 3. */
 	public int numSpinners;
 	
-	/**
-	 * The cycle of materials for each spinners.
-	 */
+	/** The cycle of materials for each spinners. */
 	public Material[][] spinnerContents;
-	/**
-	 * The time at which each spinners stops in turn.
-	 */
+	
+	/** The time at which each spinners stops in turn. */
     public int[] duration;
-    /**
-     * One Reward for ever material used in spinnerContents.
-     */
-    public static SlotMachineReward[] reward;
     
-    /**
-     * The shape of this machine, which will not be read in by a config file.
-     */
+    /** One Reward for every material used in spinnerContents. */
+    public SlotMachineReward[] reward;
+    
+    /** The shape of this machine, which will not be read in by a config file. */
     public Blueprint blueprint;
     
-    /**
-     * The type of machine this is, which will decide what config file to load
-     * and what block to place behind each item frame.
-     */
+    /** The type of machine this is, which will decide what config file to load and what block to place behind each item frame. */
     public Material type;
+    
+    /** The cost of a single spin. */
+    public int cost;
     
     public SlotMachineTemplate(Material type)
     {
     	this.type = type;
-    	InitData();
+    	InitData(type);
     	InitBlueprint();
     }
     
     /**
      * Initializes spinner and reward data.
      */
-    protected void InitData()
+    protected void InitData(Material material)
     {
         // TODO: Read this block of data from a config file, based on type.
     	numSpinners = 3;
@@ -88,16 +80,16 @@ public class SlotMachineTemplate {
 		
 		// Staring from the far left, specify each spinner.
 		for (x=-numSpinners; x<0; x++) {
-			blueprint.AddBlock(type, x, 0, 1);
+			blueprint.AddBlock(type, x, 0, -1);
 			blueprint.AddEntity(EntityType.ITEM_FRAME, x, 0, 0, BlockFace.SOUTH);
 		}
 		
-		// TODO: Set up signs.
-		int midway = -((numSpinners+1)/2);
-		blueprint.AddBlock(Material.SIGN, 0, 1, 0);
-		blueprint.AddBlock(Material.SIGN, midway, 1, 0);
-		
 		// Set up the reward chest.
+		int midway = -((numSpinners+1)/2);
 		blueprint.AddBlock(Material.CHEST, midway, -1, 0);
+		
+		// TODO: Set up signs.
+		//blueprint.AddBlock(Material.SIGN, 0, 1, 0);
+		//blueprint.AddBlock(Material.SIGN, midway, 1, 0);
 	}
 }

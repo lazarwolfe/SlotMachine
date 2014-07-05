@@ -46,20 +46,14 @@ public class SlotMachineLeverListener implements Listener {
 		// Is the Slot Machine setup correct?
 	    SlotMachine machine = plugin.getSlotMachine(player, block);
 	    if (machine == null) {
-	    	player.sendMessage("===== Failed to get a machine.");
 	    	return;
-	    }
-	    else
-	    {
-	    	player.sendMessage("===== Found a machine.");
 	    }
 	    // TODO: Determine if the player has enough money
 	    Boolean enoughMoney = true;
 	    if (!enoughMoney) {
-	    	player.sendMessage("You need $"+machine.cost+" to play this machine.");
+	    	player.sendMessage("You need $"+machine.template.cost+" to play this machine.");
 	    	return;
 	    }
-    	player.sendMessage("===== Player has enough money.");
 
 	    // Everything is valid, we can spin.
     	lever.setPowered(false);
